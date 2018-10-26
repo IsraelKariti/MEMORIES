@@ -2,6 +2,7 @@ package com.example.izi.memories;
 
 import android.app.DialogFragment;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
         // Create the toolbar (Mandatory by the Android Framework)
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+
     }
 
     @Override
@@ -70,6 +74,30 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
             case R.id.change_date:
                 MyDialogFragmentForDate myDialogFragmentForDate = new MyDialogFragmentForDate();
                 myDialogFragmentForDate.show(getFragmentManager(), "date_change");
+                break;
+            case R.id.share:
+                Log.i("XXXXX", "SHAREEEEE");
+                // create string
+                int count = 1;
+                String shareString = "";
+                Cursor cursorToShare = mMyAdapter.mCursor;
+                cursorToShare.moveToFirst();
+                while(!cursorToShare.isAfterLast()){
+                    shareString += String.valueOf(count++)+". ";
+                    shareString += cursorToShare.getString(2)+"\n";
+                    cursorToShare.moveToNext();
+                }
+
+                // send on Whatsapp
+                Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
+                whatsappIntent.setType("text/plain");
+                whatsappIntent.setPackage("com.whatsapp");
+                whatsappIntent.putExtra(Intent.EXTRA_TEXT, shareString);
+                try {
+                    startActivity(whatsappIntent);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Log.i("XXXX","Whatsapp have not been installed.");
+                }
                 break;
         }
 

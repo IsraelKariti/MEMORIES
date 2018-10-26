@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -17,6 +19,12 @@ public class MyDialogFragment extends DialogFragment {
 
     interface InsertMemoryInterface{
         public void InsertMemory(String memory, int totalDay);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);;
+        super.onActivityCreated(savedInstanceState);
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -49,6 +57,7 @@ public class MyDialogFragment extends DialogFragment {
 
     @Override
     public void onAttach(Context context) {
+        Log.i("XXXXX", "ON ATTACH - ADDD");
         insertMemoryInterface = (InsertMemoryInterface) context;
         super.onAttach(context);
     }

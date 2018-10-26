@@ -1,17 +1,12 @@
 package com.example.izi.memories;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.TimePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.util.Log;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.example.izi.memories.Utility.TotalDay;
 
@@ -44,7 +39,8 @@ public class MyDialogFragmentForDate extends DialogFragment implements DatePicke
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(Activity context) {
+
         changeToSpecificDateInterface = (ChangeToSpecificDateInterface) context;
         super.onAttach(context);
     }
