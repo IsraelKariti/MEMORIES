@@ -1,10 +1,13 @@
 package com.example.izi.memories;
 
 import android.app.DialogFragment;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,9 +21,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.izi.memories.Utility.TotalDay;
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.LocationServices;
 
 import java.util.Calendar;
 import java.util.Date;
+
+import androidx.work.WorkManager;
 
 import static com.example.izi.memories.MyContract.Memories.COLUMN_MEMORY;
 import static com.example.izi.memories.MyContract.Memories.COLUMN_TOTAL_DAY;
@@ -34,10 +41,22 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
     MySQLiteOpenHelper mSQL;
     SQLiteDatabase mDB;
 
+
+    private GeofencingClient mGeofencingClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "0")
+//                .setSmallIcon(R.drawable.ic_fitness_center_black_24dp)
+//                .setContentTitle("MAIN ACTIVITY")
+//                .setContentText("MAIN ACTIVITY")
+//                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+//
+//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+//        notificationManager.notify(-1, mBuilder.build());
 
         // prepare the database
         mSQL = new MySQLiteOpenHelper(this, "", null, 1);
@@ -57,6 +76,9 @@ public class MainActivity extends AppCompatActivity implements MyDialogFragment.
         // Create the toolbar (Mandatory by the Android Framework)
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+        Intent intent = new Intent(this, AngelService.class);
+        startService(intent);
 
 
     }
